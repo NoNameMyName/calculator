@@ -13,6 +13,8 @@ class CalculatorUtil:
     division = "division"
     sinus = "sinus"
     cosinus = "cosinus"
+    sqr = "sqr"
+    sqrt = "sqrt"
 
     @classmethod
     def statuses(cls):
@@ -23,8 +25,12 @@ class CalculatorUtil:
         return cls.common_calc, cls.accountant_calc, cls.scientific_calc
 
     @classmethod
-    def choices_for_common_and_scientific(cls):
-        return cls.add, cls.minus, cls.multiple, cls.division
+    def choices_for_common(cls):
+        return cls.add, cls.minus, cls.multiple, cls.division, cls.sqr, cls.sqrt
+
+    @classmethod
+    def choices_for_scientific(cls):
+        return cls.add, cls.minus, cls.multiple, cls.division, cls.sqr, cls.sqrt
 
     @classmethod
     def choices_for_accountant(cls):

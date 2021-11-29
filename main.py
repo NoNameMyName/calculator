@@ -16,13 +16,11 @@ class AbsCalculator(ABC):
         return value
 
     def enter_first_value(self):
-        value_1 = input("Enter first number: ")
-        self.value_1 = cal.calculator.value_convertor_float(value_1)
+        self.value_1 = cal.calculator.value_convertor_float(input("Enter first number: "))
         return self.value_1
 
     def enter_second_value(self):
-        value_2 = input("Enter second number: ")
-        self.value_2 = cal.calculator.value_convertor_float(value_2)
+        self.value_2 = cal.calculator.value_convertor_float(input("Enter second number: "))
         return self.value_2
 
     def add(self, value_1, value_2) -> float:
@@ -42,40 +40,54 @@ class AbsCalculator(ABC):
         return dividend/divider
 
     def change(self, value_1, value_2):
-        if cal.mod == CalculatorUtil.common_calc or cal.mod == CalculatorUtil.scientific_calc:
-            choice = input(f"What do you want to do with this values{CalculatorUtil.choices_for_common_and_scientific()}? ").lower()
+        if cal.mod == CalculatorUtil.common_calc:
+            choice = input(f"What do you want to do with this values{CalculatorUtil.choices_for_common()}? ").lower()
         elif cal.mod == CalculatorUtil.accountant_calc:
             choice = input(f"What do you want to do with this values{CalculatorUtil.choices_for_accountant()}? ").lower()
+        elif cal.mod == CalculatorUtil.scientific_calc:
+            choice = input(f"What do you want to do with this values{CalculatorUtil.choices_for_scientific()}? ").lower()
         if choice == CalculatorUtil.add:
-            return cal.calculator.add(self.value_1, self.value_2)
+            return cal.calculator.add(value_1, value_2)
         elif choice == CalculatorUtil.minus:
-            return cal.calculator.minus(self.value_1, self.value_2)
+            return cal.calculator.minus(value_1, value_2)
         elif choice == CalculatorUtil.multiple:
-            return cal.calculator.multiple(self.value_1, self.value_2)
+            return cal.calculator.multiple(value_1, value_2)
         elif choice == CalculatorUtil.division:
-            return cal.calculator.division(self.value_1, self.value_2)
+            return cal.calculator.division(value_1, value_2)
         elif choice == CalculatorUtil.sinus and cal.mod == CalculatorUtil.accountant_calc:
-            return cal.calculator.sinus(self.value_1, self.value_2)
+            return cal.calculator.sinus(value_1, value_2)
         elif choice == CalculatorUtil.cosinus and cal.mod == CalculatorUtil.accountant_calc:
-            return cal.calculator.cosinus(self.value_1, self.value_2)
+            return cal.calculator.cosinus(value_1, value_2)
+        elif choice == CalculatorUtil.sqr and (cal.mod == CalculatorUtil.scientific_calc or CalculatorUtil.common_calc):
+            return cal.calculator.sqr(value_1, value_2)
+        elif choice == CalculatorUtil.sqrt and (cal.mod == CalculatorUtil.scientific_calc or CalculatorUtil.common_calc):
+            return cal.calculator.sqrt(value_1, value_2)
         else:
             raise ValueError
 
 
 class CommonCalculator(AbsCalculator):
-    pass
+
+    def sqr(self, value_1, value_2) -> float:
+        return value_1 ** value_2
+
+    def sqrt(self, value_1, value_2) -> float:
+        if value_1 > 0:
+            return round(value_1 ** (1/value_2), 2)
+        else:
+            raise ValueError
 
 
 class AccountantCalculator(AbsCalculator):
 
-    def sinus(self, value_1, value_2):
+    def sinus(self, value_1, value_2) -> tuple:
         return sin(value_1), sin(value_2)
 
-    def cosinus(self, value_1, value_2):
+    def cosinus(self, value_1, value_2) -> tuple:
         return cos(value_1), cos(value_2)
 
 
-class ScientificCalculator(AbsCalculator):
+class ScientificCalculator(CommonCalculator):
     cash = []
 
     def cashing(self):
