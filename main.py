@@ -79,20 +79,19 @@ class CommonCalculator(AbsCalculator):
 
 
 class AccountantCalculator(AbsCalculator):
-
-    def sinus(self, value_1, value_2) -> tuple:
-        return sin(value_1), sin(value_2)
-
-    def cosinus(self, value_1, value_2) -> tuple:
-        return cos(value_1), cos(value_2)
-
-
-class ScientificCalculator(CommonCalculator):
     cash = []
 
     def cashing(self):
         self.cash.append(cal.calculator.change(cal.calculator.enter_first_value(), cal.calculator.enter_second_value()))
         return self.cash
+
+
+class ScientificCalculator(CommonCalculator, AccountantCalculator):
+    def sinus(self, value_1) -> float:
+        return sin(value_1)
+
+    def cosinus(self, value_1) -> float:
+        return cos(value_1)
 
 
 class Calculator:
@@ -126,7 +125,9 @@ class Calculator:
 if __name__ == '__main__':
     status = input(f'Включить калькулятор, да({CalculatorUtil.status_on}) или нет ({CalculatorUtil.status_off}): ').lower()
     cal = Calculator(status=status)
-    if cal.mod == CalculatorUtil.common_calc or cal.mod == CalculatorUtil.accountant_calc:
+    if cal.mod == CalculatorUtil.common_calc:
         print(cal.calculator.change(cal.calculator.enter_first_value(), cal.calculator.enter_second_value()))
+    elif cal.mod == CalculatorUtil.accountant_calc:
+        print(cal.calculator.cashing())
     elif cal.mod == CalculatorUtil.scientific_calc:
         print(cal.calculator.cashing())

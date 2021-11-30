@@ -30,8 +30,8 @@ class CalculatorUtil:
 
     @classmethod
     def choices_for_scientific(cls):
-        return cls.add, cls.minus, cls.multiple, cls.division, cls.sqr, cls.sqrt
+        return cls.add, cls.minus, cls.multiple, cls.division, cls.sqr, cls.sqrt, cls.sinus, cls.cosinus
 
     @classmethod
     def choices_for_accountant(cls):
-        return cls.add, cls.minus, cls.multiple, cls.division, cls.sinus, cls.cosinus
+        return cls.add, cls.minus, cls.multiple, cls.division
