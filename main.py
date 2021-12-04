@@ -55,9 +55,9 @@ class AbsCalculator(ABC):
         elif choice == CalculatorUtil.division:
             return cal.calculator.division(value_1, value_2)
         elif choice == CalculatorUtil.sinus and cal.mod == CalculatorUtil.accountant_calc:
-            return cal.calculator.sinus(value_1, value_2)
+            return cal.calculator.sinus(value_1)
         elif choice == CalculatorUtil.cosinus and cal.mod == CalculatorUtil.accountant_calc:
-            return cal.calculator.cosinus(value_1, value_2)
+            return cal.calculator.cosinus(value_1)
         elif choice == CalculatorUtil.sqr and (cal.mod == CalculatorUtil.scientific_calc or CalculatorUtil.common_calc):
             return cal.calculator.sqr(value_1, value_2)
         elif choice == CalculatorUtil.sqrt and (cal.mod == CalculatorUtil.scientific_calc or CalculatorUtil.common_calc):
@@ -85,6 +85,12 @@ class AccountantCalculator(AbsCalculator):
         self.cash.append(cal.calculator.change(cal.calculator.enter_first_value(), cal.calculator.enter_second_value()))
         return self.cash
 
+    @staticmethod
+    def history_clear(change: str):
+        if change == CalculatorUtil.yes:
+            AccountantCalculator.cash = []
+            print("History had been cleared")
+
 
 class ScientificCalculator(CommonCalculator, AccountantCalculator):
     def sinus(self, value_1) -> float:
@@ -102,32 +108,47 @@ class Calculator:
             print('Включите калькулятор')
             raise ValueError
         elif status == CalculatorUtil.status_on:
-            mod = input(f'Выбирите тип калькулятора {CalculatorUtil.models()}: ')
-            if mod == CalculatorUtil.accountant_calc:
+            self.mod = input(f'Выбирите тип калькулятора {CalculatorUtil.models()}: ')
+            if self.mod == CalculatorUtil.accountant_calc:
                 self.calculator = AccountantCalculator()
-            elif mod == CalculatorUtil.scientific_calc:
+            elif self.mod == CalculatorUtil.scientific_calc:
                 self.calculator = ScientificCalculator()
             else:
-                mod = CalculatorUtil.common_calc
-            self.mod = mod
+                self.mod = CalculatorUtil.common_calc
         else:
             print("Определитесь")
             raise ValueError
 
-    @classmethod
-    def change_mode(cls, mod: str):
+    @staticmethod
+    def change_mode(mod: str):
         if mod == CalculatorUtil.accountant_calc:
-            cls.calculator = AccountantCalculator()
+            cal.calculator = AccountantCalculator()
+            cal.mod = CalculatorUtil.accountant_calc
         elif mod == CalculatorUtil.scientific_calc:
-            cls.calculator = ScientificCalculator()
+            cal.calculator = ScientificCalculator()
+            cal.mod = CalculatorUtil.scientific_calc
+        elif mod == CalculatorUtil.common_calc:
+            cal.calculator = CommonCalculator()
+            cal.mod = CalculatorUtil.common_calc
+        else:
+            raise ValueError
 
 
 if __name__ == '__main__':
     status = input(f'Включить калькулятор, да({CalculatorUtil.status_on}) или нет ({CalculatorUtil.status_off}): ').lower()
     cal = Calculator(status=status)
-    if cal.mod == CalculatorUtil.common_calc:
-        print(cal.calculator.change(cal.calculator.enter_first_value(), cal.calculator.enter_second_value()))
-    elif cal.mod == CalculatorUtil.accountant_calc:
-        print(cal.calculator.cashing())
-    elif cal.mod == CalculatorUtil.scientific_calc:
-        print(cal.calculator.cashing())
+    while True:
+        if cal.mod == CalculatorUtil.common_calc:
+            print(cal.calculator.change(cal.calculator.enter_first_value(), cal.calculator.enter_second_value()))
+        elif cal.mod == CalculatorUtil.accountant_calc:
+            print(cal.calculator.cashing())
+        elif cal.mod == CalculatorUtil.scientific_calc:
+            print(cal.calculator.cashing())
+        if cal.mod != CalculatorUtil.common_calc:
+            AccountantCalculator.history_clear(input(f"Do you want to clear history{CalculatorUtil.mod_changes()}? "))
+        change_to_type = input(f"Do you want to change type of calculator{CalculatorUtil.mod_changes()}? ")
+        if change_to_type == CalculatorUtil.yes:
+            cal.change_mode(input(f"What type of calculator do you want to change{CalculatorUtil.models()}? "))
+        elif change_to_type == CalculatorUtil.no:
+            pass
+

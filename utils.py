@@ -16,6 +16,13 @@ class CalculatorUtil:
     sqr = "sqr"
     sqrt = "sqrt"
 
+    yes = "yes"
+    no = "no"
+
+    @classmethod
+    def mod_changes(cls):
+        return cls.yes, cls.no
+
     @classmethod
     def statuses(cls):
         return cls.status_on, cls.status_off
