@@ -151,4 +151,3 @@ if __name__ == '__main__':
             cal.change_mode(input(f"What type of calculator do you want to change{CalculatorUtil.models()}? "))
         elif change_to_type == CalculatorUtil.no:
             pass
-
