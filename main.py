@@ -34,10 +34,11 @@ class AbsCalculator(ABC):
 
     def division(self, dividend, divider) -> float:
         divider = self.value_convertor_float(divider)
-        if divider == 0:
-            raise ZeroDivisionError
-        dividend = self.value_convertor_float(dividend)
-        return dividend/divider
+        try:
+            res = dividend/divider
+        except ZeroDivisionError:
+            res = "infinity"
+        return res
 
     def change(self, value_1, value_2):
         if cal.mod == CalculatorUtil.common_calc:
